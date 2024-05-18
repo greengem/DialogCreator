@@ -3,22 +3,23 @@ import { Node } from 'reactflow';
 const initialNodes: Node[] = [
   {
     id: '1',
-    type: 'custom',
-    data: { name: 'Jane Doe', job: 'CEO', emoji: '😎' },
-    position: { x: 0, y: 50 },
+    type: 'start',
+    data: {},
+    position: { x: 0, y: 0 },
   },
   {
     id: '2',
-    type: 'custom',
-    data: { name: 'Tyler Weary', job: 'Designer', emoji: '🤓' },
-    position: { x: -200, y: 200 },
+    type: 'end',
+    data: {},
+    position: { x: 600, y: 0 },
   },
   {
     id: '3',
-    type: 'custom',
-    data: { name: 'Kristi Price', job: 'Developer', emoji: '🤩' },
-    position: { x: 200, y: 200 },
+    type: 'message',
+    data: { name: 'Jane Doe', job: 'CEO', emoji: '😎' },
+    position: { x: 300, y: 0 },
   },
+
 ];
   
   export default initialNodes;

@@ -1,5 +1,5 @@
 'use client'
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import ReactFlow, {
   useNodesState,
   useEdgesState,
@@ -11,21 +11,21 @@ import ReactFlow, {
   NodeTypes,
   OnConnect,
   Background,
-  BackgroundVariant
+  BackgroundVariant,
+  Panel
 } from 'reactflow';
-
 import 'reactflow/dist/base.css';
 import MessageNode from '@/components/nodes/MessageNode';
 import StartNode from '@/components/nodes/StartNode';
-import EndNode from '@/components/nodes/EndNode';
-
+import CharactersNode from '@/components/nodes/CharactersNode';
+import { Button } from "@radix-ui/themes"
 import initialNodes from '@/data/initialNodes';
 import initialEdges from '@/data/initialEdges';
 
 const nodeTypes: NodeTypes = {
   start: StartNode,
-  end: EndNode,
   message: MessageNode,
+  characters: CharactersNode,
 };
 
 export default function Page() {
@@ -34,24 +34,20 @@ export default function Page() {
 
   const onConnect: OnConnect = useCallback((params: Connection) => setEdges((eds) => addEdge(params, eds)), []);
 
-  const deleteNode = useCallback((nodeId: string) => {
-    setNodes((nds) => nds.filter((node) => node.id !== nodeId));
-  }, [setNodes]);
-
-  const nodesWithDeleteHandler = useMemo(() => {
-    return nodes.map((node) => ({
-      ...node,
-      data: {
-        ...node.data,
-        onDelete: () => deleteNode(node.id),
-      },
-    }));
-  }, [nodes, deleteNode]);
+  const addNode = useCallback(() => {
+    const newNode: Node = {
+      id: `${nodes.length + 1}`,
+      type: 'message',
+      position: { x: Math.random() * 800, y: Math.random() * 600 },
+      data: {}
+    };
+    setNodes((nds) => nds.concat(newNode));
+  }, [nodes, setNodes]);
 
   return (
     <div className='h-dvh w-full '>
       <ReactFlow
-        nodes={nodesWithDeleteHandler}
+        nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
@@ -60,9 +56,18 @@ export default function Page() {
         fitView
         className="bg-zinc-900"
       >
+        <Panel position="top-left"><FlowActions addNode={addNode} /></Panel>
         <Background color="#333" variant={BackgroundVariant.Dots} />
         <Controls />
       </ReactFlow>
     </div>
   );
-};
+}
+
+function FlowActions({ addNode }: { addNode: () => void }) {
+  return (
+    <div className="flex gap-5">
+      <Button className="btn btn-primary" onClick={addNode}>Add Node</Button>
+    </div>
+  );
+}

@@ -1,6 +1,6 @@
 'use client'
 import { NodeTemplate, NodeBody, NodeHeading } from './NodeTemplate';
-import { TextField } from '@radix-ui/themes';
+import { TextField, Button } from '@radix-ui/themes';
 import { IconPlus, IconUser, IconX } from '@tabler/icons-react';
 import { useState, ChangeEvent } from 'react';
 import useCharacterStore from '@/data/useCharacterStore';
@@ -24,7 +24,7 @@ export default function CharactersNode() {
     <NodeTemplate color='bg-blue-500'>
       <NodeHeading title='Characters' />
       <NodeBody>
-        <div className='flex justify-between'>
+        <div className='flex justify-between gap-1'>
           <TextField.Root
             placeholder="Add a character…"
             value={newCharacter}
@@ -35,9 +35,9 @@ export default function CharactersNode() {
             </TextField.Slot>
           </TextField.Root>
 
-          <button onClick={handleAddCharacter}>
-            <IconPlus />
-          </button>
+          <Button onClick={handleAddCharacter} size="2">
+            <IconPlus size={16} />
+          </Button>
         </div>
 
         <ul>

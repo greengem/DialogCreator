@@ -41,7 +41,7 @@ export function NodeBody({ children, nodeInput, nodeOutput }: NodeBodyProps) {
   const paddingRightClass = nodeOutput ? 'pr-6' : '';
 
   return (
-    <div className={`flex flex-col gap-y-3 bg-zinc-800 text-zinc-200 rounded-md py-3 ${paddingLeftClass} ${paddingRightClass}`}>
+    <div className={`flex flex-col gap-y-3 bg-zinc-800 text-zinc-200 rounded-md py-5 ${paddingLeftClass} ${paddingRightClass}`}>
       {children}
     </div>
   );

@@ -1,8 +1,4 @@
-type Edge = {
-  id: string;
-  source: string;
-  target: string;
-};
+import { Edge } from 'reactflow';
 
 const initialEdges: Edge[] = [
   {

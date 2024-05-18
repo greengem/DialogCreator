@@ -8,9 +8,7 @@ interface CustomNodeData {
   job: string;
 }
 
-type CustomNodeProps = {
-  data: CustomNodeData;
-} & NodeProps;
+type CustomNodeProps = NodeProps<CustomNodeData>;
 
 function CustomNode({ data }: CustomNodeProps) {
   return (

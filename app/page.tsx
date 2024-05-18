@@ -6,7 +6,11 @@ import ReactFlow, {
   addEdge,
   MiniMap,
   Controls,
-  Connection
+  Connection,
+  Node,
+  Edge,
+  NodeTypes,
+  OnConnect
 } from 'reactflow';
 
 import 'reactflow/dist/base.css';
@@ -15,15 +19,15 @@ import CustomNode from '@/components/CustomNode';
 import initialNodes from '@/data/initialNodes';
 import initialEdges from '@/data/initialEdges';
 
-const nodeTypes = {
+const nodeTypes: NodeTypes = {
   custom: CustomNode,
 };
 
 export default function Page() {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [nodes, setNodes, onNodesChange] = useNodesState<Node[]>(initialNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge[]>(initialEdges);
 
-  const onConnect = useCallback((params: Connection) => setEdges((eds) => addEdge(params, eds)), []);
+  const onConnect: OnConnect = useCallback((params: Connection) => setEdges((eds) => addEdge(params, eds)), []);
 
   return (
     <div className='h-dvh w-full'>

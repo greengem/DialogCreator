@@ -12,7 +12,8 @@ import ReactFlow, {
   OnConnect,
   Background,
   BackgroundVariant,
-  Panel
+  Panel,
+  ReactFlowProvider
 } from 'reactflow';
 import 'reactflow/dist/base.css';
 import MessageNode from '@/components/nodes/MessageNode';
@@ -45,22 +46,24 @@ export default function Page() {
   }, [nodes, setNodes]);
 
   return (
-    <div className='h-dvh w-full '>
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-        nodeTypes={nodeTypes}
-        fitView
-        className="bg-zinc-900"
-      >
-        <Panel position="top-left"><FlowActions addNode={addNode} /></Panel>
-        <Background color="#333" variant={BackgroundVariant.Dots} />
-        <Controls />
-      </ReactFlow>
-    </div>
+    <ReactFlowProvider>
+      <div className='h-dvh w-full '>
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          onConnect={onConnect}
+          nodeTypes={nodeTypes}
+          fitView
+          className="bg-zinc-900"
+        >
+          <Panel position="top-left"><FlowActions addNode={addNode} /></Panel>
+          <Background color="#333" variant={BackgroundVariant.Dots} />
+          <Controls />
+        </ReactFlow>
+      </div>
+    </ReactFlowProvider>
   );
 }
 

@@ -1,29 +1,48 @@
-import { IconX } from '@tabler/icons-react';
-
 type NodeTemplateProps = {
   children: React.ReactNode;
   color: string;
+  size?: 'sm' | 'md' | 'lg' | 'xl';
 };
 
-export function NodeTemplate({ children, color }: NodeTemplateProps) {
+const sizeClasses = {
+  sm: 'w-32',
+  md: 'w-64',
+  lg: 'w-80',
+  xl: 'w-96',
+};
+
+export function NodeTemplate({ children, color, size = 'md' }: NodeTemplateProps) {
+  const sizeClass = sizeClasses[size];
+  
   return (
-    <div className={`min-w-64 text-xs shadow-md ${color} p-[2px] rounded-md text-zinc-200`}>
+    <div className={`${sizeClass} text-xs shadow-md ${color} p-[2px] rounded-md text-zinc-200`}>
       {children}
     </div>
   );
 }
 
-export function NodeHeading({ title, onDelete }: { title: string; onDelete?: () => void }) {
+
+export function NodeHeading({ title }: { title: string; onDelete?: () => void }) {
   return (
-      <div className='p-2 font-semibold flex justify-between'>
+      <div className='p-1 font-semibold flex justify-between'>
           <div>{title}</div>
-          {onDelete && <button onClick={onDelete}><IconX size={16} /></button>}
       </div>
   )
 }
 
-export function NodeBody({ children } : { children: React.ReactNode }) {
-    return (
-        <div className='bg-zinc-800 text-zinc-200 rounded-md px-6 py-3'>{children}</div>
-    )
+type NodeBodyProps = {
+  children: React.ReactNode;
+  nodeInput?: boolean;
+  nodeOutput?: boolean;
+};
+
+export function NodeBody({ children, nodeInput, nodeOutput }: NodeBodyProps) {
+  const paddingLeftClass = nodeInput ? 'pl-6' : 'px-3';
+  const paddingRightClass = nodeOutput ? 'pr-6' : '';
+
+  return (
+    <div className={`flex flex-col gap-y-3 bg-zinc-800 text-zinc-200 rounded-md py-3 ${paddingLeftClass} ${paddingRightClass}`}>
+      {children}
+    </div>
+  );
 }

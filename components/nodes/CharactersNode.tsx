@@ -29,11 +29,7 @@ export default function CharactersNode() {
             placeholder="Add a character…"
             value={newCharacter}
             onChange={handleChange}
-          >
-            <TextField.Slot>
-              <IconUser height="16" width="16" />
-            </TextField.Slot>
-          </TextField.Root>
+          />
 
           <Button onClick={handleAddCharacter} size="2">
             <IconPlus size={16} />
@@ -44,7 +40,7 @@ export default function CharactersNode() {
           {characters.map((character, index) => (
             <li
               key={index}
-              className='flex justify-between border-b-2 border-zinc-700 py-2 last:border-0'
+              className='flex justify-between border-b-2 border-zinc-700 py-2 last:border-b-0'
             >
               <p>{character}</p>
               <IconX

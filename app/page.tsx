@@ -77,7 +77,7 @@ export default function Page() {
 
 function FlowActions({ addNode }: { addNode: (type: string) => void }) {
   return (
-    <div className="flex gap-5">
+    <div className="flex gap-5 z-50">
       <Button onClick={() => addNode('message')}><IconMessage size={18} />Message</Button>
       <Button onClick={() => addNode('condition')}><IconQuestionMark size={18} /> Condition</Button>
       <Button onClick={() => addNode('random')}><IconArrowsShuffle2 size={18} />Random</Button>

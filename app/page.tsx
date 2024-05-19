@@ -16,6 +16,7 @@ import ReactFlow, {
   ReactFlowProvider
 } from 'reactflow';
 import 'reactflow/dist/base.css';
+import { v4 as uuidv4 } from 'uuid';
 import MessageNode from '@/components/nodes/MessageNode';
 import StartNode from '@/components/nodes/StartNode';
 import CharactersNode from '@/components/nodes/CharactersNode';
@@ -43,13 +44,13 @@ export default function Page() {
 
   const addNode = useCallback((type: string) => {
     const newNode: Node = {
-      id: `${nodes.length + 1}`,
+      id: uuidv4(), // Generate a unique ID for each new node
       type: type,
       position: { x: Math.random() * 800, y: Math.random() * 600 },
       data: {}
     };
     setNodes((nds) => nds.concat(newNode));
-  }, [nodes, setNodes]);
+  }, [setNodes]);
 
   return (
     <ReactFlowProvider>
@@ -77,7 +78,7 @@ export default function Page() {
 
 function FlowActions({ addNode }: { addNode: (type: string) => void }) {
   return (
-    <div className="flex gap-5 z-50">
+    <div className="flex gap-3 z-50">
       <Button onClick={() => addNode('message')}><IconMessage size={18} />Message</Button>
       <Button onClick={() => addNode('condition')}><IconQuestionMark size={18} /> Condition</Button>
       <Button onClick={() => addNode('random')}><IconArrowsShuffle2 size={18} />Random</Button>

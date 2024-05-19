@@ -7,7 +7,7 @@ interface CharacterState {
 }
 
 const useCharacterStore = create<CharacterState>((set) => ({
-  characters: ['Player', 'John Doe', 'Jane Smith', 'Alice Johnson'],
+  characters: ['Narrator', 'Player', 'Amelia Earhart', 'Jacques Cousteau', 'Thor Heyerdahl', 'Edmund Hillary', 'Beryl Markham', 'Ernest Shackleton'],
   addCharacter: (character: string) =>
     set((state) => ({
       characters: [...state.characters, character],

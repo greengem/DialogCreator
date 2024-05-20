@@ -3,7 +3,10 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import '@radix-ui/themes/styles.css';
 import { Theme } from '@radix-ui/themes';
+import ClientProviders from "./providers";
 const inter = Inter({ subsets: ["latin"] });
+import Navbar from "@/components/Navbar";
+import Sidebar from "@/components/Sidebar";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,7 +20,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}><Theme>{children}</Theme></body>
+      <body className={inter.className}>
+        <Theme appearance="dark">
+          <ClientProviders>
+            <div className='h-dvh w-full flex flex-col'>
+              <Navbar />
+              <div className='flex grow'>
+                {children}
+              </div>
+            </div>
+          </ClientProviders>
+        </Theme>
+      </body>
     </html>
   );
 }

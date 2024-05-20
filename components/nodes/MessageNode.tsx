@@ -43,7 +43,7 @@ export function MessageNode({ id }: { id: string }) {
       <NodeHeading title='Show Message' />
       <NodeBody>
         <CharacterSelect />
-        <TextArea placeholder="I'm not arguing, I'm just explaining why I'm right.." size="1" className='nodrag h-64' resize="vertical" />
+        <TextArea placeholder="I'm not arguing, I'm just explaining why I'm right.." size="1" className='nodrag h-32' resize="vertical" />
         <Choices 
           choices={choices} 
           addChoice={addChoice} 

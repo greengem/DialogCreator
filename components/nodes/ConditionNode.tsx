@@ -2,6 +2,7 @@
 import { Handle, Position } from 'reactflow';
 import { NodeTemplate, NodeBody, NodeHeading } from './NodeTemplate';
 import { TextField } from '@radix-ui/themes';
+import { CustomHandle } from '../CustomHandle';
 
 export default function ConditionNode() {
   return (
@@ -30,7 +31,7 @@ export default function ConditionNode() {
           </li>
         </ul>
       </NodeBody>
-      <Handle type="target" position={Position.Left} className="w-2 h-2 rounded-full !bg-zinc-600 ring-2 ring-green-500 ml-3 mt-4" />
+      <CustomHandle type='target' position={Position.Left} ringColor='ring-green-500' />
     </NodeTemplate>
   );
 }

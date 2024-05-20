@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Handle, Position, useUpdateNodeInternals } from 'reactflow';
 import { NodeTemplate, NodeBody, NodeHeading } from './NodeTemplate';
 import { Slider } from '@radix-ui/themes';
+import { CustomHandle } from '../CustomHandle';
 
 export default function RandomNode({ id } : { id: string }) {
   const [sliderValue, setSliderValue] = useState([20]);
@@ -21,7 +22,7 @@ export default function RandomNode({ id } : { id: string }) {
   return (
     <NodeTemplate color='bg-yellow-500' textColor='black' size='md'>
       <NodeHeading title='Random' />
-      <NodeBody nodeOutput>
+      <NodeBody>
         <Slider 
           value={sliderValue}
           onValueChange={setSliderValue}
@@ -43,12 +44,13 @@ export default function RandomNode({ id } : { id: string }) {
                     id={`source-${index}`}
                     className="w-2 h-2 rounded-full !bg-zinc-600 ring-2 ring-yellow-500 -mr-3" 
                 />
+                
                 </li>
             ))}
             </ul>
         </div>
       </NodeBody>
-      <Handle type="target" position={Position.Left} className="w-2 h-2 rounded-full !bg-zinc-600 ring-2 ring-yellow-500 ml-3 mt-4" />
+      <CustomHandle type='target' position={Position.Left} ringColor='ring-yellow-500' />
     </NodeTemplate>
   );
 }

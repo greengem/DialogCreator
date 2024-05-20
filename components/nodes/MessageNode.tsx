@@ -5,6 +5,7 @@ import { NodeTemplate, NodeBody, NodeHeading } from './NodeTemplate';
 import { Button, Select, TextArea, TextField } from '@radix-ui/themes';
 import useCharacterStore from '@/data/useCharacterStore';
 import { IconX } from '@tabler/icons-react';
+import { CustomHandle, CustomHandleNested }  from '../CustomHandle';
 
 interface Choice {
   id: number;
@@ -38,11 +39,11 @@ export function MessageNode({ id }: { id: string }) {
   }, [choices, id, updateNodeInternals]);
 
   return (
-    <NodeTemplate color='bg-purple-500' size='xl'>
+    <NodeTemplate color='bg-purple-500' size='md'>
       <NodeHeading title='Show Message' />
-      <NodeBody nodeInput nodeOutput>
+      <NodeBody>
         <CharacterSelect />
-        <TextArea placeholder="I'm not arguing, I'm just explaining why I'm right.." size="1" className='nodrag' resize="vertical" />
+        <TextArea placeholder="I'm not arguing, I'm just explaining why I'm right.." size="1" className='nodrag h-64' resize="vertical" />
         <Choices 
           choices={choices} 
           addChoice={addChoice} 
@@ -50,9 +51,9 @@ export function MessageNode({ id }: { id: string }) {
           handleTextChange={handleTextChange} 
         />
       </NodeBody>
-      <Handle type="target" position={Position.Left} className="w-2 h-2 rounded-full !bg-zinc-600 ring-2 ring-purple-500 ml-3" />
+      <CustomHandle type='target' position={Position.Left} ringColor='ring-purple-500' />
       {choices.length === 0 && (
-        <Handle type="source" position={Position.Right} className="w-2 h-2 rounded-full !bg-zinc-600 ring-2 ring-purple-500 mr-3" />
+        <CustomHandle type='source' position={Position.Right} ringColor='ring-purple-500' />
       )}
     </NodeTemplate>
   );
@@ -90,26 +91,23 @@ interface ChoicesProps {
 function Choices({ choices, addChoice, removeChoice, handleTextChange }: ChoicesProps) {
   return (
     <>
-      <Button className='bg-purple-500' color='purple' onClick={addChoice}>Add Choice</Button>
-      <ul className='flex flex-col gap-y-3'>
-        {choices.map((choice, index) => (
-          <li key={choice.id} className='flex gap-2 items-center relative'>
-            <Button color='red' className='shrink-0 grow-0 nodrag' onClick={() => removeChoice(choice.id)}><IconX size={16} /></Button>
-            <TextField.Root 
-              placeholder="Choice.." 
-              className='grow nodrag' 
-              value={choice.text} 
-              onChange={(e) => handleTextChange(choice.id, e.target.value)}
-            />
-            <Handle 
-              type="source" 
-              position={Position.Right} 
-              id={choice.handleId} 
-              className="w-2 h-2 rounded-full !bg-zinc-600 ring-2 ring-purple-500 -mr-3"
-            />
-          </li>
-        ))}
-      </ul>
+      <Button className='bg-purple-500 nodrag' color='purple' onClick={addChoice}>Add Choice</Button>
+      {choices.length > 0 && (
+        <ul className='flex flex-col gap-y-3'>
+          {choices.map((choice, index) => (
+            <li key={choice.id} className='flex gap-2 items-center relative'>
+              <Button color='red' className='shrink-0 grow-0 nodrag' onClick={() => removeChoice(choice.id)}><IconX size={16} /></Button>
+              <TextField.Root 
+                placeholder="Choice.." 
+                className='grow nodrag' 
+                value={choice.text} 
+                onChange={(e) => handleTextChange(choice.id, e.target.value)}
+              />
+              <CustomHandleNested type='source' position={Position.Right} ringColor='ring-purple-500' />
+            </li>
+          ))}
+        </ul>
+      )}
     </>
   );
 };

@@ -1,3 +1,4 @@
+// mockData.ts
 import { Edge, Node } from 'reactflow';
 
 export const exampleNodes: Node[] = [
@@ -10,7 +11,7 @@ export const exampleNodes: Node[] = [
   {
     id: 'characters',
     type: 'characters',
-    data: {},
+    data: { characters: ['Narrator', 'Player'] },
     position: { x: -300, y: 0 },
   },
   {
@@ -19,7 +20,6 @@ export const exampleNodes: Node[] = [
     data: {},
     position: { x: 300, y: 0 },
   },
-
 ];
 
 export const exampleEdges: Edge[] = [

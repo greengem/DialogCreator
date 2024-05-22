@@ -26,15 +26,12 @@ export function NodeTemplate({ children, color, size = 'md', textColor = 'text-z
 
 interface NodeHeadingProps {
   title: string;
-  canBeCompleted?: boolean;
-  completedColor?: SwitchProps['color'];
 }
 
-export function NodeHeading({ title, canBeCompleted, completedColor = 'gray' }: NodeHeadingProps) {
+export function NodeHeading({ title }: NodeHeadingProps) {
   return (
     <div className='p-1 font-semibold flex justify-between'>
         <div>{title}</div>
-        {canBeCompleted && (<Switch color={completedColor} size="1" />)}
     </div>
   )
 }

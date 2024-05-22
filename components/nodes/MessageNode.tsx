@@ -1,11 +1,10 @@
-'use client'
+'use client';
 import React, { memo, useState, useEffect } from 'react';
-import { Handle, Position, useUpdateNodeInternals } from 'reactflow';
+import { Position, useUpdateNodeInternals, NodeProps, useReactFlow } from 'reactflow';
 import { NodeTemplate, NodeBody, NodeHeading } from './NodeTemplate';
 import { Button, Select, TextArea, TextField } from '@radix-ui/themes';
-import useCharacterStore from '@/data/useCharacterStore';
 import { IconX } from '@tabler/icons-react';
-import { CustomHandle, CustomHandleNested }  from '../CustomHandle';
+import { CustomHandle, CustomHandleNested } from '../CustomHandle';
 
 interface Choice {
   id: number;
@@ -13,9 +12,12 @@ interface Choice {
   handleId: string;
 }
 
-export function MessageNode({ id }: { id: string }) {
-  const [choices, setChoices] = useState<Choice[]>([]);
+export function MessageNode({ id, data }: NodeProps) {
+  const [character, setCharacter] = useState(data.character || 'Player');
+  const [message, setMessage] = useState(data.message || '');
+  const [choices, setChoices] = useState<Choice[]>(data.choices || []);
   const updateNodeInternals = useUpdateNodeInternals();
+  const { setNodes, getNodes } = useReactFlow();
 
   const addChoice = () => {
     const newChoice = {
@@ -36,14 +38,41 @@ export function MessageNode({ id }: { id: string }) {
 
   useEffect(() => {
     updateNodeInternals(id);
-  }, [choices, id, updateNodeInternals]);
+    setNodes((nds) =>
+      nds.map((node) => {
+        if (node.id === id) {
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              character,
+              message,
+              choices,
+            },
+          };
+        }
+        return node;
+      })
+    );
+  }, [choices, id, updateNodeInternals, character, message, setNodes]);
+
+  // Retrieve characters from the characters node
+  const characterNode = getNodes().find(node => node.type === 'characters');
+  const characters = characterNode ? characterNode.data.characters : [];
 
   return (
-    <NodeTemplate color='bg-purple-500' size='md'>
+    <NodeTemplate color='bg-purple-700' size='md'>
       <NodeHeading title='Show Message' />
       <NodeBody>
-        <CharacterSelect />
-        <TextArea placeholder="I'm not arguing, I'm just explaining why I'm right.." size="1" className='nodrag h-32' resize="vertical" />
+        <CharacterSelect character={character} setCharacter={setCharacter} characters={characters} />
+        <TextArea 
+          placeholder="I'm not arguing, I'm just explaining why I'm right.." 
+          size="1" 
+          className='nodrag h-32' 
+          resize="vertical" 
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+        />
         <Choices 
           choices={choices} 
           addChoice={addChoice} 
@@ -61,11 +90,15 @@ export function MessageNode({ id }: { id: string }) {
 
 export default memo(MessageNode);
 
-function CharacterSelect() {
-  const { characters } = useCharacterStore();
+interface CharacterSelectProps {
+  character: string;
+  setCharacter: (character: string) => void;
+  characters: string[];
+}
 
+function CharacterSelect({ character, setCharacter, characters }: CharacterSelectProps) {
   return (
-    <Select.Root defaultValue="Player">
+    <Select.Root value={character} onValueChange={setCharacter}>
       <Select.Trigger className='w-64' />
       <Select.Content className='w-full'>
         <Select.Group>
@@ -91,23 +124,23 @@ interface ChoicesProps {
 function Choices({ choices, addChoice, removeChoice, handleTextChange }: ChoicesProps) {
   return (
     <>
-      <Button className='bg-purple-500 nodrag' color='purple' onClick={addChoice}>Add Choice</Button>
+      <Button variant='outline' className='bg-purple-500 nodrag' color='purple' onClick={addChoice}>Add Choice</Button>
       {choices.length > 0 && (
         <ul className='flex flex-col gap-y-3'>
-          {choices.map((choice, index) => (
+          {choices.map((choice) => (
             <li key={choice.id} className='flex gap-2 items-center relative'>
-              <Button color='red' className='shrink-0 grow-0 nodrag' onClick={() => removeChoice(choice.id)}><IconX size={16} /></Button>
+              <button className='shrink-0 grow-0 nodrag text-red-500' onClick={() => removeChoice(choice.id)}><IconX size={16} /></button>
               <TextField.Root 
                 placeholder="Choice.." 
                 className='grow nodrag' 
                 value={choice.text} 
                 onChange={(e) => handleTextChange(choice.id, e.target.value)}
               />
-              <CustomHandleNested type='source' position={Position.Right} ringColor='ring-purple-500' />
+              <CustomHandleNested type='source' position={Position.Right} ringColor='ring-purple-500' id={choice.handleId} />
             </li>
           ))}
         </ul>
       )}
     </>
   );
-};
+}

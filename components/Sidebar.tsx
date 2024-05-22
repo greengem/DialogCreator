@@ -1,6 +1,7 @@
 'use client'
 import React from 'react';
-import { IconArrowsShuffle2, IconMessage, IconPlayerPlayFilled, IconQuestionMark, IconTrash, IconUser } from '@tabler/icons-react';
+import { IconArrowsShuffle2, IconLogin, IconLogout, IconMessage, IconPlayerPlayFilled, IconQuestionMark, IconTrash, IconUser } from '@tabler/icons-react';
+import { signOut, signIn } from 'next-auth/react';
 
 type SidebarProps = {
     addNode: (type: string) => void;
@@ -19,6 +20,8 @@ export default function Sidebar({ addNode, deleteFlow }: SidebarProps) {
       </div>
 
       <div className='flex flex-col items-center py-5 gap-3'>
+        <button onClick={() => signOut()}><IconLogout /></button>
+        <button onClick={() => signIn()}><IconLogin /></button>
         <button color='red' onClick={deleteFlow} className='hover:bg-red-700 hover:text-white p-2 rounded-md'><IconTrash /></button>
       </div>
     </aside>

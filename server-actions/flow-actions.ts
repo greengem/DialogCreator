@@ -46,7 +46,9 @@ function formatEdges(edges: Edge[]) {
   return edges.map((edge) => ({
     id: edge.id,
     source: edge.source,
+    sourceHandle: edge.sourceHandle,
     target: edge.target,
+    targetHandle: edge.targetHandle,
   }));
 }
 
@@ -100,7 +102,6 @@ export async function handleSaveFlow(flowName: string, nodes: Node[], edges: Edg
 
     return { success: true, message: "Flow saved", flow };
   } catch (e: unknown) {
-    console.error("Error saving flow:", e);
     return { success: false, message: (e as Error).message || "Failed to save flow" };
   }
 }
@@ -139,7 +140,6 @@ export async function handleDeleteFlow(flowName: string): Promise<Response> {
 
     return { success: true, message: "Flow reset and new default characters node created" };
   } catch (e: unknown) {
-    console.error("Error resetting flow:", e);
     return { success: false, message: (e as Error).message || "Failed to reset flow" };
   }
 }

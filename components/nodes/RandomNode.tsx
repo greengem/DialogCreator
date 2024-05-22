@@ -1,9 +1,9 @@
 'use client'
 import React, { useState, useEffect } from 'react';
-import { Handle, Position, useUpdateNodeInternals } from 'reactflow';
+import { Position, useUpdateNodeInternals } from 'reactflow';
 import { NodeTemplate, NodeBody, NodeHeading } from './NodeTemplate';
 import { Slider } from '@radix-ui/themes';
-import { CustomHandle } from '../CustomHandle';
+import { CustomHandle, CustomHandleNested } from '../CustomHandle';
 
 export default function RandomNode({ id } : { id: string }) {
   const [sliderValue, setSliderValue] = useState([20]);
@@ -20,7 +20,7 @@ export default function RandomNode({ id } : { id: string }) {
   }, [numberOfOutputs, id, updateNodeInternals]);
 
   return (
-    <NodeTemplate color='bg-yellow-500' textColor='black' size='md'>
+    <NodeTemplate color='bg-yellow-700' size='md'>
       <NodeHeading title='Random' />
       <NodeBody>
         <Slider 
@@ -31,22 +31,22 @@ export default function RandomNode({ id } : { id: string }) {
           step={1}
           variant="soft"
           className='nodrag'
+          color='yellow'
         />
         <div className='flex justify-between'>
             <p>Number of random outputs</p>
             <ul className='text-xs flex flex-col gap-3'>
-            {Array.from({ length: numberOfOutputs }).map((_, index) => (
-                <li key={index} className='flex items-center justify-end relative'>
-                <div className='uppercase'>{index + 1}</div>
-                <Handle 
-                    type="source" 
-                    position={Position.Right} 
-                    id={`source-${index}`}
-                    className="w-2 h-2 rounded-full !bg-zinc-600 ring-2 ring-yellow-500 -mr-3" 
-                />
-                
-                </li>
-            ))}
+              {Array.from({ length: numberOfOutputs }).map((_, index) => (
+                  <li key={index} className='flex items-center justify-end relative pr-1'>
+                    <div className='uppercase'>{index + 1}</div>
+                    <CustomHandleNested 
+                        type="source" 
+                        position={Position.Right} 
+                        id={`source-${index}`}
+                        ringColor='ring-yellow-500'
+                    />
+                  </li>
+              ))}
             </ul>
         </div>
       </NodeBody>

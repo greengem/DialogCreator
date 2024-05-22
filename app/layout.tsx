@@ -6,7 +6,7 @@ import { Theme } from '@radix-ui/themes';
 import ClientProviders from "./providers";
 const inter = Inter({ subsets: ["latin"] });
 import Navbar from "@/components/Navbar";
-import Sidebar from "@/components/Sidebar";
+import { Toaster } from 'sonner'
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -23,6 +23,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Theme appearance="dark">
           <ClientProviders>
+            <Toaster />
             <div className='h-dvh w-full flex flex-col'>
               <Navbar />
               <div className='flex grow'>

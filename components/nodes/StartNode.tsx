@@ -5,9 +5,9 @@ import { CustomHandle } from '../CustomHandle';
 
 export default function StartNode() {
   return (
-    <NodeTemplate color='bg-red-500' size='sm'>
+    <NodeTemplate color='bg-red-700' size='sm'>
         <NodeHeading title='Start' />
-        <NodeBody>It all starts here</NodeBody>
+        <NodeBody />
         <CustomHandle type='source' position={Position.Right} ringColor='ring-red-500' />
     </NodeTemplate>
   );

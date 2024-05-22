@@ -1,6 +1,6 @@
-import { Node } from 'reactflow';
+import { Edge, Node } from 'reactflow';
 
-const initialNodes: Node[] = [
+export const exampleNodes: Node[] = [
   {
     id: 'start',
     type: 'start',
@@ -16,10 +16,16 @@ const initialNodes: Node[] = [
   {
     id: '1',
     type: 'message',
-    data: { name: 'Jane Doe', job: 'CEO', emoji: '😎' },
+    data: {},
     position: { x: 300, y: 0 },
   },
 
 ];
-  
-  export default initialNodes;
+
+export const exampleEdges: Edge[] = [
+  {
+    id: 'e1-2',
+    source: 'start',
+    target: '1',
+  },
+];

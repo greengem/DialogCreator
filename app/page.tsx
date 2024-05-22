@@ -6,8 +6,6 @@ import { exampleEdges, exampleNodes } from "@/data/mockData";
 
 // Perform server side data fetching
 export default async function PageServer() {
-  console.log("**  --  PageServer function started  --  **");
-
   const session = await auth();
 
   // If the user is not authenticated, show the default flow with mock data
@@ -19,9 +17,9 @@ export default async function PageServer() {
 
   // Fetch the default-flow for the user
   const email = session.user.email;
+  
   let flow;
   try {
-    console.log(`Fetching flow for user: ${email}`);
     flow = await prisma.flow.findFirstOrThrow({
       where: {
         user: {
@@ -34,7 +32,6 @@ export default async function PageServer() {
         edges: true,
       },
     });
-    console.log("Flow fetched: ", flow.id);
   } catch (error) {
     console.error("Error fetching flow: ", error);
     return <PageClient initialNodes={exampleNodes} initialEdges={exampleEdges} isMockData={true} />;
@@ -52,8 +49,9 @@ export default async function PageServer() {
     id: edge.id,
     source: edge.source,
     target: edge.target,
+    sourceHandle: edge.sourceHandle,
+    targetHandle: edge.targetHandle,
   }));
 
-  console.log("**  --  PageServer function completed -- **");
   return <PageClient initialNodes={nodes} initialEdges={edges} isMockData={false} />;
 }

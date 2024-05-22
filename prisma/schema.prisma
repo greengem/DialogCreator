@@ -86,11 +86,13 @@ model Node {
 }
 
 model Edge {
-  id       String  @id @default(cuid())
-  source   String
-  target   String
-  flowId   String
-  flow     Flow    @relation(fields: [flowId], references: [id], onDelete: Cascade)
+  id           String  @id @default(cuid())
+  source       String
+  sourceHandle String?
+  target       String
+  targetHandle String?
+  flowId       String
+  flow         Flow    @relation(fields: [flowId], references: [id], onDelete: Cascade)
 
   @@index([flowId])
 }

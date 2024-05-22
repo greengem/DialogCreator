@@ -1,7 +1,7 @@
 'use client'
-import React from 'react';
-import { IconArrowsShuffle2, IconLogin, IconLogout, IconMessage, IconPlayerPlayFilled, IconQuestionMark, IconTrash, IconUser } from '@tabler/icons-react';
+import { IconArrowsShuffle2, IconLogin, IconLogout, IconMessage, IconPlayerPlayFilled, IconQuestionMark, IconTrash, IconVariable } from '@tabler/icons-react';
 import { signOut, signIn } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 
 type SidebarProps = {
     addNode: (type: string) => void;
@@ -9,7 +9,8 @@ type SidebarProps = {
 };
 
 export default function Sidebar({ addNode, deleteFlow }: SidebarProps) {
-
+  const { data: session, status } = useSession();
+  
   return (
     <aside className='w-16 bg-zinc-950 text-zinc-400 shadow-md flex flex-col justify-between'>
       <div className='flex flex-col items-center py-5 gap-3'>
@@ -17,11 +18,15 @@ export default function Sidebar({ addNode, deleteFlow }: SidebarProps) {
         <button onClick={() => addNode('message')} className='hover:bg-zinc-700 hover:text-white p-2 rounded-md'><IconMessage /></button>
         <button onClick={() => addNode('condition')} className='hover:bg-zinc-700 hover:text-white p-2 rounded-md'><IconQuestionMark /></button>
         <button onClick={() => addNode('random')} className='hover:bg-zinc-700 hover:text-white p-2 rounded-md'><IconArrowsShuffle2 /></button>
+        {/* <button onClick={() => addNode('variable')} className='hover:bg-zinc-700 hover:text-white p-2 rounded-md'><IconVariable /></button> */}
       </div>
 
       <div className='flex flex-col items-center py-5 gap-3'>
-        <button onClick={() => signOut()}><IconLogout /></button>
-        <button onClick={() => signIn()}><IconLogin /></button>
+        {status === 'authenticated' ? (
+          <button onClick={() => signOut()} className='hover:bg-zinc-700 hover:text-white p-2 rounded-md'><IconLogout /></button>
+        ) : (
+          <button onClick={() => signIn()} className='hover:bg-zinc-700 hover:text-white p-2 rounded-md'><IconLogin /></button>
+        )}
         <button color='red' onClick={deleteFlow} className='hover:bg-red-700 hover:text-white p-2 rounded-md'><IconTrash /></button>
       </div>
     </aside>

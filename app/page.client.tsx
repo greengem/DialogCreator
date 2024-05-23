@@ -8,11 +8,17 @@ import StartNode from '@/components/nodes/StartNode';
 import CharactersNode from '@/components/nodes/CharactersNode';
 import ConditionNode from '@/components/nodes/ConditionNode';
 import RandomNode from '@/components/nodes/RandomNode';
+import VariableNode from '@/components/nodes/VariableNode';
 import Sidebar from '@/components/Sidebar';
-import { Button } from '@radix-ui/themes';
-import { handleSaveFlow, handleDeleteFlow } from '@/server-actions/flow-actions';
+import { handleDeleteFlow } from '@/server-actions/flow-actions';
 import { toast } from 'sonner';
-import { signIn } from 'next-auth/react';
+import UserSaveActions from './utils/UserSaveActions';
+
+interface PageClientProps {
+  initialNodes: Node[];
+  initialEdges: Edge[];
+  isMockData: boolean;
+}
 
 const nodeTypes: NodeTypes = {
   start: StartNode,
@@ -20,12 +26,12 @@ const nodeTypes: NodeTypes = {
   characters: CharactersNode,
   condition: ConditionNode,
   random: RandomNode,
+  variable: VariableNode,
 };
 
+// Format the default data for a new node
 const getDefaultNodeData = (type: string) => {
   switch (type) {
-    case 'characters':
-      return { characters: ['Player', 'Narrator'] };
     case 'message':
       return { character: 'Player', message: '', choices: [] };
     case 'condition':
@@ -36,12 +42,6 @@ const getDefaultNodeData = (type: string) => {
       return {};
   }
 };
-
-interface PageClientProps {
-  initialNodes: Node[];
-  initialEdges: Edge[];
-  isMockData: boolean;
-}
 
 export default function PageClient({ initialNodes, initialEdges, isMockData }: PageClientProps) {
   const [nodes, setNodes, onNodesChange] = useNodesState<Node[]>(initialNodes);
@@ -108,29 +108,3 @@ export default function PageClient({ initialNodes, initialEdges, isMockData }: P
   );
 }
 
-interface UserSaveActionsProps {
-  nodes: Node[];
-  edges: Edge[];
-  isMockData: boolean;
-}
-
-function UserSaveActions({ nodes, edges, isMockData }: UserSaveActionsProps) {
-  const saveFlow = async () => {
-    const response = await handleSaveFlow('default-flow', nodes, edges);
-    if (response.success) {
-      toast.success('Flow saved successfully');
-    } else {
-      toast.error('Failed to save flow');
-    }
-  };
-
-  return (
-    <div className='flex gap-3'>
-      {isMockData ? (
-        <Button color="gray" variant="surface" onClick={() => signIn()}>Sign In to Save</Button>
-      ) : (
-        <Button color="gray" variant="surface" onClick={saveFlow}>Save Flow</Button>
-      )}
-    </div>
-  );
-}

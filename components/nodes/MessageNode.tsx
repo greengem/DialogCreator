@@ -1,13 +1,13 @@
-'use client';
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useState, useEffect, useCallback } from 'react';
 import { Position, useUpdateNodeInternals, NodeProps, useReactFlow } from 'reactflow';
 import { NodeTemplate, NodeBody, NodeHeading } from './NodeTemplate';
 import { Button, Select, TextArea, TextField } from '@radix-ui/themes';
 import { IconX } from '@tabler/icons-react';
 import { CustomHandle, CustomHandleNested } from '../CustomHandle';
+import { v4 as uuidv4 } from 'uuid';
 
 interface Choice {
-  id: number;
+  id: string;
   text: string;
   handleId: string;
 }
@@ -17,29 +17,45 @@ export function MessageNode({ id, data }: NodeProps) {
   const [message, setMessage] = useState(data.message || '');
   const [choices, setChoices] = useState<Choice[]>(data.choices || []);
   const updateNodeInternals = useUpdateNodeInternals();
-  const { setNodes, getNodes } = useReactFlow();
+  const { setNodes, setEdges, getNodes, getEdges } = useReactFlow();
 
-  const addChoice = () => {
+  const addChoice = useCallback(() => {
     const newChoice = {
-      id: Date.now(),
+      id: uuidv4(),
       text: '',
-      handleId: `handle-${Date.now()}`
+      handleId: uuidv4()
     };
-    setChoices([...choices, newChoice]);
-  };
+    setChoices((prevChoices) => {
+      const updatedChoices = [...prevChoices, newChoice];
+      updateNodeInternals(id); // Update node internals after adding choice
+      return updatedChoices;
+    });
+  }, [id, updateNodeInternals]);
 
-  const removeChoice = (id: number) => {
-    setChoices(choices.filter(choice => choice.id !== id));
-  };
+const removeChoice = useCallback((choiceId: string) => {
+  // Get the handleId of the choice
+  const choice = choices.find(choice => choice.id === choiceId);
+  const handleId = choice ? choice.handleId : null;
 
-  const handleTextChange = (id: number, text: string) => {
-    setChoices(choices.map(choice => (choice.id === id ? { ...choice, text } : choice)));
-  };
+  // First update the edges
+  setEdges((prevEdges) => {
+    const updatedEdges = prevEdges.filter(edge => edge.sourceHandle !== handleId && edge.targetHandle !== handleId);
+    updateNodeInternals(id); // Update node internals after removing edges
+    return updatedEdges;
+  });
+
+  // Then update the choices
+  setChoices((prevChoices) => {
+    const updatedChoices = prevChoices.filter(choice => choice.id !== choiceId);
+    updateNodeInternals(id); // Update node internals after removing choice
+    return updatedChoices;
+  });
+}, [id, setEdges, updateNodeInternals, choices]);
 
   useEffect(() => {
     updateNodeInternals(id);
-    setNodes((nds) =>
-      nds.map((node) => {
+    setNodes((prevNodes) =>
+      prevNodes.map((node) => {
         if (node.id === id) {
           return {
             ...node,
@@ -54,7 +70,15 @@ export function MessageNode({ id, data }: NodeProps) {
         return node;
       })
     );
-  }, [choices, id, updateNodeInternals, character, message, setNodes]);
+  }, [choices, character, message, id, updateNodeInternals, setNodes]);
+
+  const handleTextChange = useCallback((choiceId: string, text: string) => {
+    setChoices((prevChoices) => {
+      const updatedChoices = prevChoices.map(choice => (choice.id === choiceId ? { ...choice, text } : choice));
+      updateNodeInternals(id); // Update node internals after changing text
+      return updatedChoices;
+    });
+  }, [id, updateNodeInternals]);
 
   // Retrieve characters from the characters node
   const characterNode = getNodes().find(node => node.type === 'characters');
@@ -62,7 +86,7 @@ export function MessageNode({ id, data }: NodeProps) {
 
   return (
     <NodeTemplate color='bg-purple-700' size='md'>
-      <NodeHeading title='Show Message' />
+      <NodeHeading title='Show Message'/>
       <NodeBody>
         <CharacterSelect character={character} setCharacter={setCharacter} characters={characters} />
         <TextArea 
@@ -117,8 +141,8 @@ function CharacterSelect({ character, setCharacter, characters }: CharacterSelec
 interface ChoicesProps {
   choices: Choice[];
   addChoice: () => void;
-  removeChoice: (id: number) => void;
-  handleTextChange: (id: number, text: string) => void;
+  removeChoice: (id: string) => void;
+  handleTextChange: (id: string, text: string) => void;
 }
 
 function Choices({ choices, addChoice, removeChoice, handleTextChange }: ChoicesProps) {

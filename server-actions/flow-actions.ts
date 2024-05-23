@@ -138,7 +138,7 @@ export async function handleDeleteFlow(flowName: string): Promise<Response> {
 
     revalidatePath("/");
 
-    return { success: true, message: "Flow reset and new default characters node created" };
+    return { success: true, message: "Flow reset" };
   } catch (e: unknown) {
     return { success: false, message: (e as Error).message || "Failed to reset flow" };
   }

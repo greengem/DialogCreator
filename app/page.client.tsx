@@ -50,11 +50,11 @@ export default function PageClient({ initialNodes, initialEdges, isMockData }: P
   // Update nodes and edges when initialNodes or initialEdges change
   useEffect(() => {
     setNodes(initialNodes);
-  }, [initialNodes]);
+  }, [initialNodes, setNodes]);
 
   useEffect(() => {
     setEdges(initialEdges);
-  }, [initialEdges]);
+  }, [initialEdges, setEdges]);
 
   // Callback to add an edge between nodes
   const onConnect: OnConnect = useCallback((params: Connection) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
@@ -107,4 +107,3 @@ export default function PageClient({ initialNodes, initialEdges, isMockData }: P
     </div>
   );
 }
-

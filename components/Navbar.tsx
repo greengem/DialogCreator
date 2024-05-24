@@ -11,7 +11,7 @@ export default async function Navbar() {
         <nav className="bg-zinc-950 flex  items-center px-4 justify-between py-3">
             <div className="text-3xl tracking-tighter text-zinc-300 flex gap-2 items-center">
                 <IconArtboardFilled size={30} />
-                <p>Dialogue Designer</p>
+                <p>Dialogue Creator</p>
             </div>
             {session?.user?.email && (
                 <CustomAvatar image={image} name={name} />

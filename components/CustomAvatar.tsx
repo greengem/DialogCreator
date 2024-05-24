@@ -12,6 +12,6 @@ export default function CustomAvatar({ image, name }: CustomAvatarProps) {
     const defaultName = 'User';
 
     return (
-        <Avatar src={image ?? defaultImage} fallback={name ?? defaultName} />
+        <Avatar size="2" src={image ?? defaultImage} fallback={name ?? defaultName} />
     );
 }

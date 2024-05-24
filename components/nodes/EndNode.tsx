@@ -3,12 +3,12 @@ import { Position,} from 'reactflow';
 import { NodeTemplate, NodeBody, NodeHeading } from './NodeTemplate';
 import { CustomHandle } from '../CustomHandle';
 
-export default function StartNode() {
+export default function EndNode() {
   return (
-    <NodeTemplate color='bg-red-700' size='sm'>
-        <NodeHeading title='Start' />
+    <NodeTemplate color='bg-emerald-700' size='sm'>
+        <NodeHeading title='End' />
         <NodeBody />
-        <CustomHandle type='source' position={Position.Right} ringColor='ring-red-500' />
+        <CustomHandle type='target' position={Position.Left} ringColor='ring-emerald-500' />
     </NodeTemplate>
   );
 }

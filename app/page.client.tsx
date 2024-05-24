@@ -3,12 +3,15 @@ import { useEffect, useCallback } from 'react';
 import ReactFlow, { useNodesState, useEdgesState, addEdge, Controls, Connection, Node, Edge, NodeTypes, OnConnect, Background, BackgroundVariant, Panel } from 'reactflow';
 import 'reactflow/dist/base.css';
 import { v4 as uuidv4 } from 'uuid';
+
 import MessageNode from '@/components/nodes/MessageNode';
 import StartNode from '@/components/nodes/StartNode';
+import EndNode from '@/components/nodes/EndNode';
 import CharactersNode from '@/components/nodes/CharactersNode';
 import ConditionNode from '@/components/nodes/ConditionNode';
 import RandomNode from '@/components/nodes/RandomNode';
 import VariableNode from '@/components/nodes/VariableNode';
+
 import Sidebar from '@/components/Sidebar';
 import { handleDeleteFlow } from '@/server-actions/flow-actions';
 import { toast } from 'sonner';
@@ -22,6 +25,7 @@ interface PageClientProps {
 
 const nodeTypes: NodeTypes = {
   start: StartNode,
+  end: EndNode,
   message: MessageNode,
   characters: CharactersNode,
   condition: ConditionNode,
@@ -95,9 +99,9 @@ export default function PageClient({ initialNodes, initialEdges, isMockData }: P
           onConnect={onConnect}
           nodeTypes={nodeTypes}
           fitView
-          className="bg-zinc-900"
+          className="bg-zinc-800"
         >
-          <Background color="#333" variant={BackgroundVariant.Dots} />
+          <Background color="#444" variant={BackgroundVariant.Dots} />
           <Controls />
           <Panel position='top-right'>
             <UserSaveActions nodes={nodes} edges={edges} isMockData={isMockData} />

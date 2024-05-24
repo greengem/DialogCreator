@@ -1,3 +1,4 @@
+import { IconArtboard, IconArtboardFilled } from "@tabler/icons-react";
 import CustomAvatar from "./CustomAvatar";
 import { auth } from "@/auth";
 
@@ -7,8 +8,11 @@ export default async function Navbar() {
     const name = session?.user?.id ?? undefined;
 
     return (
-        <nav className="h-16 bg-zinc-950 flex  items-center px-5 border-b-2 border-zinc-700 justify-between text-white tracking-tight">
-            <p className="text-2xl font-light">DialogueDesigner</p>
+        <nav className="bg-zinc-950 flex  items-center px-4 justify-between py-3">
+            <div className="text-3xl tracking-tighter text-zinc-300 flex gap-2 items-center">
+                <IconArtboardFilled size={30} />
+                <p>Dialogue Designer</p>
+            </div>
             {session?.user?.email && (
                 <CustomAvatar image={image} name={name} />
             )}
